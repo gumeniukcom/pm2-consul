@@ -1,0 +1,8 @@
+{
+  "apps" : [{
+    "name"       : "api-app",
+    "script"     : "1.js",
+    "instances"  : 4,
+    "exec_mode"  : "cluster"
+  }]
+}
