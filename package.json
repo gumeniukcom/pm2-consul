@@ -1,6 +1,6 @@
 {
   "name": "pm2-consul",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "pm2-consul : publish pm2 apps into consul",
   "main": "app.js",
   "dependencies": {
