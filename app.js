@@ -1,6 +1,8 @@
 var pmx = require('pmx');
 var pm2 = require('pm2');
-var moment  = require('moment');
+var moment = require('moment');
+var consul = require('consul')();
+var _ = require('lodash');
 
 /******************************
  *    ______ _______ ______
@@ -8,13 +10,10 @@ var moment  = require('moment');
  *   |    __/       |    __|
  *   |___|  |__|_|__|______|
  *
- *      PM2 Module Sample
- *
  ******************************/
 
 pmx.initModule({
 
-    // Options related to the display style on Keymetrics
     widget: {
 
         // Logo displayed
@@ -53,6 +52,7 @@ pmx.initModule({
 });
 
 var WORKER_INTERVAL = moment.duration(1, 'seconds').asMilliseconds();
+var curApps = null;
 
 pm2.connect(function (err) {
     if (err) return console.error(err.stack || err);
@@ -61,11 +61,23 @@ pm2.connect(function (err) {
         pm2.list(function (err, apps) {
             if (err) return console.error(err.stack || err);
 
-            // console.log(apps);
+            // var oldApps = curApps;
+            // curApps = apps;
 
-            apps.forEach(function(app) {
+            // console.log(_.difference(
+            //     [{q: 1}, {q: 2}],
+            //     [{q: 1}, {q: 3}]
+            // ));
+
+            apps.forEach(function (app) {
                 // console.log(app);
-                console.log(app.name, app.pm2_env.instances,app.pm2_env.exec_mode);
+                consul.agent.service.register(app.name + '-' + app.pm_id, function (err) {
+                    if (err) {
+                        console.error(err);
+                    }
+                    console.log(app.name, app.pm_id, app.pm2_env.instances, app.pm2_env.exec_mode);
+                });
+
             });
 
         });
@@ -78,7 +90,6 @@ pm2.connect(function (err) {
             worker();
         }, WORKER_INTERVAL);
     }, (WORKER_INTERVAL - (Date.now() % WORKER_INTERVAL)));
-
 
 });
 
