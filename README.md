@@ -1,12 +1,4 @@
-Start module in development mode:
-$ cd pm2-consul/
-$ pm2 install .
+pm2-consul
+==========
 
-Module Log:
-$ pm2 logs pm2-consul
-
-Uninstall module:
-$ pm2 uninstall pm2-consul
-
-Force restart:
-$ pm2 restart pm2-consul
+Module for publish apps from pm2 to consul
