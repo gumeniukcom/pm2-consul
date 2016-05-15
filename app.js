@@ -51,7 +51,7 @@ pmx.initModule({
     console.log(conf);
 });
 
-var WORKER_INTERVAL = moment.duration(1, 'seconds').asMilliseconds();
+var WORKER_INTERVAL = moment.duration(50, 'seconds').asMilliseconds();
 var curApps = null;
 
 pm2.connect(function (err) {
